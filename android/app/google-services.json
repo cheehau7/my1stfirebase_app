@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "578108032821",
+    "firebase_url": "https://my-first-firebase-51859-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "my-first-firebase-51859",
+    "storage_bucket": "my-first-firebase-51859.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578108032821:android:b1e25d5f8ea11e92552e7c",
+        "android_client_info": {
+          "package_name": "com.example.myflutter_exp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578108032821-5u2btg3ugfabcg5ohebjh6toouk3m3b6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lawliehew",
+            "certificate_hash": "658a48d30cb455aaddd18b9cc71c29d25c46d6ac"
+          }
+        },
+        {
+          "client_id": "578108032821-h7iiccqqlig0rqccl55n13kiavbbu5k8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhoVKrm2DSyHV0HLGNfhAm6OSXD7Wz6r8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578108032821-h7iiccqqlig0rqccl55n13kiavbbu5k8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "578108032821-m7p8t6mloveubpq251ubadvgme3n6g8e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lawliet.myfirstfirebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
