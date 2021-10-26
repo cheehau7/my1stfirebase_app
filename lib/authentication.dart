@@ -47,6 +47,7 @@ class AuthenticationHelper with ChangeNotifier{
   //Get User
   Future getUser() async {
     try {
+      
         _auth.authStateChanges().listen((User? user) { 
 
         if (user == null) {
@@ -70,6 +71,7 @@ class AuthenticationHelper with ChangeNotifier{
   Future<bool?> checkEmailVerified({bool isFirst = false}) async {
     final user = _auth.currentUser;
     if (isFirst) {
+      print("Sending email");
       user?.sendEmailVerification();  
       signOut();
     }
@@ -83,7 +85,7 @@ class AuthenticationHelper with ChangeNotifier{
        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> LandingScreen()));
       }
       else {
-        signOut();
+       // signOut();
         print("Email failed");
         return false;
       }

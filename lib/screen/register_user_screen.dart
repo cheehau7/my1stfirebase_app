@@ -194,7 +194,7 @@ class RegisterUserScreen extends StatelessWidget {
                                             backgroundColor: Colors.transparent,
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.BOTTOM);
-                                       // return;
+                                        return;
                                         AuthenticationHelper()
                                             .signInWithGoogle();
                                       },

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import './app.dart';
 import './authentication.dart';
 import 'package:myflutter_exp1/provider/auth_provider.dart';
@@ -13,20 +14,21 @@ import 'screen/user_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase?.initializeApp();
-  runApp(MainScreen());
-}
+  runApp(ProviderScope(child: MainScreen()));
+}     
 
 class MainScreen extends StatelessWidget {
   
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthenticationHelper> (create: (ctx) => AuthenticationHelper(),),
-        ChangeNotifierProvider<AuthProvider> (create: (ctx) => AuthProvider(),)
-      ],
-      child: MaterialApp(
+    // return MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider<AuthenticationHelper> (create: (ctx) => AuthenticationHelper(),),
+    //     ChangeNotifierProvider<AuthProvider> (create: (ctx) => AuthProvider(),)
+    //   ],
+    //   child: 
+        return MaterialApp(
         theme: ThemeData(
           primaryColor: Colors.indigo,
            primarySwatch: Colors.indigo,
@@ -45,6 +47,7 @@ class MainScreen extends StatelessWidget {
         home: FutureBuilder<bool>(
           future: AuthProvider().checkLogin(),
           builder: (BuildContext context, snapshot) {
+           
             if (snapshot.hasData) {
               if (snapshot.data == false) {
               print("Is false");
@@ -55,7 +58,7 @@ class MainScreen extends StatelessWidget {
             }
             }
             else {
-              return LoginScreen();
+              return CircularProgressIndicator();
             }
           },
         ),
@@ -66,7 +69,6 @@ class MainScreen extends StatelessWidget {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           LandingScreen.routeName: (ctx) => LandingScreen(),
         }
-      ),
     );
   }
 

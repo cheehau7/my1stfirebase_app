@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myflutter_exp1/authentication.dart';
 import 'package:myflutter_exp1/custom_bar.dart';
 import 'package:myflutter_exp1/provider/auth_provider.dart';
 import 'package:myflutter_exp1/screen/landing_screen.dart';
 import 'package:myflutter_exp1/screen/register_user_screen.dart';
 import 'package:myflutter_exp1/screen/second_screen.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:riverpod/riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,7 @@ void main() async {
   runApp(LoginScreen());
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   static const routeName = "/screen/login_screen.dart";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final title = "Please register";
@@ -34,23 +36,33 @@ class LoginScreen extends StatelessWidget {
   bool _isValidate = false;
   FocusNode? femail = FocusNode();
   FocusNode? fpassword = FocusNode();
+  final authPassProvider = StateProvider.autoDispose<bool>((ref) => false);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    
+    final isVisiblePass = ref.watch(authPassProvider).state;
+    ref.listen(authPassProvider, (StateController<bool> passPro) {
+      //this callback executes when the provider value changes.
+      // not when the build method is called
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Password visibility changed."))
+      );
+     });
+
     return Scaffold(
         appBar: CustomAppBar(),
         backgroundColor: Colors.indigoAccent,
-        body: _buildContent());
+        body: _buildContent(isVisiblePass, ref));
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(bool isV, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constaints) {
-        bool _passwordVisible =
-            Provider.of<AuthProvider>(context).passwordVisible;
+     //   bool _passwordVisible = context.watch<AuthProvider>().passwordVisible;
         return Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+       //   autovalidateMode: AutovalidateMode.always,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(10),
             child: Stack(
@@ -95,6 +107,8 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide:
@@ -104,7 +118,6 @@ class LoginScreen extends StatelessWidget {
                                   Icons.person,
                                   color: Colors.indigoAccent,
                                 ),
-                                
                                 hintText: "Email"),
                             controller: _emailController,
                             focusNode: femail,
@@ -128,6 +141,8 @@ class LoginScreen extends StatelessWidget {
                             height: 15,
                           ),
                           TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             focusNode: fpassword,
                             onFieldSubmitted: (t) {
                               fpassword!.unfocus();
@@ -142,12 +157,16 @@ class LoginScreen extends StatelessWidget {
                                   //color: Colors.grey,
 
                                   onPressed: () {
-                                    Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .passwordVisibility();
+                                    ref.read(authPassProvider).state = !isV;
+                                    // Provider.of<AuthProvider>(context,
+                                    //         listen: false)
+                                    //     .passwordVisibility();
+                                   // context.read<AuthProvider>().passwordVisibility();
+                                    
                                   },
                                   icon: Icon(
-                                    _passwordVisible
+                                    isV
+                                   // _passwordVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                   ),
@@ -157,10 +176,11 @@ class LoginScreen extends StatelessWidget {
                                   color: Colors.indigoAccent,
                                 )),
                             controller: _passwordController,
-                            obscureText: !_passwordVisible,
+                            obscureText: !isV,
                             validator: (value) {
-                               if (fpassword!.hasFocus) return null;
-                               if (femail!.hasFocus && value == null) return null; 
+                              if (fpassword!.hasFocus) return null;
+                              if (femail!.hasFocus && value == null)
+                                return null;
                               if (value == null) {
                                 print('enter');
                                 return 'Please enter your password';
@@ -263,6 +283,10 @@ class LoginScreen extends StatelessWidget {
                                                         child: Text('Ok')),
                                                     TextButton(
                                                         onPressed: () async {
+                                                          await AuthenticationHelper()
+                                                              .checkEmailVerified(
+                                                                  isFirst:
+                                                                      true);
                                                           UIBlock.block(
                                                               context);
                                                           Future.delayed(
@@ -271,6 +295,7 @@ class LoginScreen extends StatelessWidget {
                                                               () {
                                                             UIBlock.unblock(
                                                                 context);
+
                                                             Fluttertoast.showToast(
                                                                 msg:
                                                                     "New email verfication had been sent.",
@@ -285,15 +310,11 @@ class LoginScreen extends StatelessWidget {
                                                                 .text = "";
                                                             _formKey
                                                                 .currentState
-                                                                ?.deactivate();
+                                                                ?.dispose();
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
                                                           });
-                                                          await AuthenticationHelper()
-                                                              .checkEmailVerified(
-                                                                  isFirst:
-                                                                      true);
                                                         },
                                                         child: Text(
                                                             'Resent email verfication.',

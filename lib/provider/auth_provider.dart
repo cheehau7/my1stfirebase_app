@@ -17,13 +17,15 @@ String? name;
 int? loginTimes;
 var data;
 var daily;
-
+bool showVisible = true;
+bool hideVisible = false;
 
 class AuthProvider with ChangeNotifier {
     bool _passwordVisible = false;
     bool get passwordVisible => _passwordVisible;
     Future<bool> checkLogin() async {
     bool isSigned = false;
+
     await AuthenticationHelper().getUser().then((result) => {
           if (result == null)
             {print("result is null"), isSigned = false}
@@ -54,7 +56,7 @@ class AuthProvider with ChangeNotifier {
 
  passwordVisibility() {
     _passwordVisible = !_passwordVisible;
-
+    print(_passwordVisible);
     notifyListeners();
   }
 
