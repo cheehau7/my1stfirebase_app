@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myflutter_exp1/authentication.dart';
+import 'package:myflutter_exp1/db_service.dart';
 import 'package:myflutter_exp1/model/user.dart';
 import 'package:myflutter_exp1/screen/landing_screen.dart';
 import 'package:myflutter_exp1/screen/login_screen.dart';
@@ -11,7 +12,7 @@ enum Status {
   Registering,
 }
 
-final fb = FirebaseDatabase.instance.reference();
+final fb = DBService().getFB;
 String? uuid;
 String? name;
 int? loginTimes;
@@ -23,10 +24,12 @@ bool hideVisible = false;
 class AuthProvider with ChangeNotifier {
     bool _passwordVisible = false;
     bool get passwordVisible => _passwordVisible;
-    Future<bool> checkLogin() async {
-    bool isSigned = false;
 
-    await AuthenticationHelper().getUser().then((result) => {
+
+    Future<bool> checkLogin() async {
+      bool isSigned = false;
+
+     await AuthenticationHelper().getUser().then((result) => {
           if (result == null)
             {print("result is null"), isSigned = false}
           else

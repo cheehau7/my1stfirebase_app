@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myflutter_exp1/authentication.dart';
+import 'package:myflutter_exp1/db_service.dart';
 import 'package:myflutter_exp1/main.dart';
 import 'package:myflutter_exp1/provider/auth_provider.dart';
 import 'package:myflutter_exp1/screen/login_screen.dart';
@@ -18,7 +19,8 @@ class RegisterUserScreen extends StatelessWidget {
   final TextEditingController _pass2 = TextEditingController();
   final TextEditingController _fullName = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  final fb = FirebaseDatabase.instance.reference();
+  final fb = DBService().getFB;
+  
   String? uuid;
 
   RegisterUserScreen({Key? key}) : super(key: key);
@@ -366,6 +368,7 @@ class RegisterUserScreen extends StatelessWidget {
             gravity: ToastGravity.BOTTOM);
       }
     });
+    //Send email verification to new user
     await AuthenticationHelper().checkEmailVerified(isFirst: true);
 
     if (!isExist) {

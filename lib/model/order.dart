@@ -1,7 +1,7 @@
 
 class Order {
 
-  String? id;
+  final String? id;
   String? itemName;
   String? date;
   double? price;

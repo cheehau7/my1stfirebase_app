@@ -1,9 +1,9 @@
 class User {
 
-   String? name;
-   int? age;
-   String? email;
-   String? uuid;
+   final String? name;
+   final int? age;
+   final String? email;
+   final String? uuid;
 
     User({this.name, this.age, this.email, this.uuid});
     

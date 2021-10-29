@@ -31,8 +31,4 @@ class _AppScreenState extends State<AppScreen> {
       return LoginScreen();
     }
   }
-
-  // Future<bool> checkLogin() async{
-  //    await AuthProvider().checkLogin();
-  // }
 }
