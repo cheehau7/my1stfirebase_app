@@ -10,8 +10,5 @@ class DBService {
   DBService._internal();
   
   DatabaseReference get getFB => _fb;
- 
-
-  
 
 }

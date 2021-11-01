@@ -4,10 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myflutter_exp1/authentication.dart';
+import 'package:myflutter_exp1/constants.dart';
 import 'package:myflutter_exp1/custom_bar.dart';
 import 'package:myflutter_exp1/db_service.dart';
 import 'package:myflutter_exp1/main.dart';
@@ -26,6 +28,8 @@ final streamProvider = StreamProvider<int>((ref) {
   return Stream.fromIterable([36, 50]);
 });
 
+
+
 class LandingScreen extends ConsumerStatefulWidget {
   final User? user;
   final fb = DBService().getFB;
@@ -38,6 +42,8 @@ class LandingScreen extends ConsumerStatefulWidget {
 
 class _LandingScreenState extends ConsumerState<LandingScreen> {
   User? usr;
+  User? usr2;
+  
   int selectedIndex = 0;
   List<Widget>? tabs;
 
@@ -48,11 +54,12 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
     fb.child('userProfile/${getUUID}').onValue.listen((event) {
       print("hehe " + event.snapshot.value.toString());
       final mydata = Map<String, dynamic>.from(event.snapshot.value);
-      final name = mydata['name'] as String;
-      final age = (mydata['age'] ?? '0') as String;
+      // final name = mydata['name'] as String;
+      // final age = (mydata['age'] ?? '0') as String;
+      usr2 = User.fromJson(mydata);
       print("name: ${name}");
       setState(() {
-        usr = User(name: name, uuid: getUUID, age: int.parse(age));
+        //  usr = User(name: name, uuid: getUUID, age: int.parse(age));
       });
     });
   }
@@ -61,10 +68,9 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
   void initState() {
     print("Try enter");
     _activateListeners();
-     super.initState();
-    tabs = [MovieScreen(), ProfileScreen()];
+    super.initState();
+    tabs = [MovieScreen(), ProfileScreen(usr: usr2,)];
     //init();
-   
   }
 
   Future<void> init() async {
@@ -90,22 +96,20 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
     final TextEditingController _name = TextEditingController();
     final TextEditingController _age = TextEditingController();
     final streamAsyncValue = ref.watch(streamProvider);
-    return Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: Scaffold(
         resizeToAvoidBottomInset: false,
-      //  appBar: CustomAppBar(title: "Movie", isBackAvailable: false, ),
+        //  appBar: CustomAppBar(title: "Movie", isBackAvailable: false, ),
         backgroundColor: Colors.white,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIndex,
           onTap: _onTabItem,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: 'Home'
-            ),
+                icon: Icon(Icons.home_outlined), label: 'Home'),
             BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.user),
-              label: 'Profile'
-            ),
+                icon: FaIcon(FontAwesomeIcons.user), label: 'Profile'),
           ],
         ),
         body: tabs![selectedIndex],
@@ -173,7 +177,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         //                   colors: [Colors.purple, Colors.indigoAccent])),
         //         ),
         //         Container(
-                 
+    
         //           width: double.infinity,
         //           margin: const EdgeInsets.only(top: 240),
         //           padding: EdgeInsets.only(top: 30),
@@ -227,7 +231,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         //                         child: Container(
         //                           width: double.infinity,
         //                           decoration: BoxDecoration(
-                                    
+    
         //                               borderRadius: BorderRadius.circular(10),
         //                               color: Colors.greenAccent[700]),
         //                           child: TextButton(
@@ -322,7 +326,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         //                                                 } on FirebaseException catch (e) {
         //                                                   e.message;
         //                                                 }
-
+    
         //                                                 UIBlock.unblock(
         //                                                     context);
         //                                                 Navigator.of(context)
@@ -445,7 +449,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         //         Positioned(
         //           top: displayWidth(context) * 0.32,
         //           left: displayWidth(context) * 0.38,
-
+    
         //           //  right: 150,
         //           child: Material(
         //             borderRadius: BorderRadius.circular(25.0),
@@ -475,7 +479,8 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         //     );
         //   },
         // )
-        );
+      ),
+    );
   }
 
   Future<Widget> _getImage(BuildContext context, String imageName) async {

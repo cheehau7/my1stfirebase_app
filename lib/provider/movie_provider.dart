@@ -24,6 +24,7 @@ class GetDataFromMovieApi extends ChangeNotifier {
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
       Iterable list = result["Search"];
+      print(list);
       return list.map((e) => Movie.fromJson(e)).toList();
     }
     else {
