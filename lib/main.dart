@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myflutter_exp1/screen/change_name_scree.dart';
+import 'package:myflutter_exp1/screen/movie_detail.dart';
 import './app.dart';
 import './authentication.dart';
 import 'package:myflutter_exp1/provider/auth_provider.dart';
@@ -66,6 +67,7 @@ class MainScreen extends StatelessWidget {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           LandingScreen.routeName: (ctx) => LandingScreen(),
           ChangeNameScreen.routeName: (ctx) => ChangeNameScreen(),
+          MovieDetailScreen.routeName: (ctx) => MovieDetailScreen()
         });
   }
 }

@@ -16,8 +16,6 @@ final fb = DBService().getFB;
 String? uuid;
 String? name;
 int? loginTimes;
-var data;
-var daily;
 bool showVisible = true;
 bool hideVisible = false;
 

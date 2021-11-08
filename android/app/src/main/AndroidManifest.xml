@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myflutter_exp1">
+   <uses-permission android:name="android.permission.NFC" />
    <application
         android:label="myflutter_exp1"
         android:icon="@mipmap/ic_launcher">

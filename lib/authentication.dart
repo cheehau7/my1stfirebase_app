@@ -12,7 +12,6 @@ class AuthenticationHelper with ChangeNotifier{
   final FirebaseAuth _auth = FirebaseAuth.instance;
   //final uid = _auth.authStateChanges().listen((User? user) => user?.uid);
  // Stream<User> get authState => _auth.authStateChanges().listen((User? user) => user?.uid);
-  
   Future signIn({required String email, required String password}) async {
     
     try {
@@ -134,5 +133,7 @@ class AuthenticationHelper with ChangeNotifier{
   //     //Once signed in, return the UserCredential
   //     return await FirebaseAuth.instance.signInWithCredential(credential);
   // }
- 
+    getUUID() {
+    return _auth.currentUser?.uid as String;
+  }
 }

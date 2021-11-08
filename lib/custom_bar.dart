@@ -5,15 +5,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
 
   final String? title;
   final bool? isBackAvailable;
-  
-  CustomAppBar({this.title, this.isBackAvailable});
+  final bool? isTitleCenter;
+
+  CustomAppBar({this.title, this.isBackAvailable, this.isTitleCenter});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
         title: Text(title ?? ""),
         backgroundColor: Colors.indigoAccent,
-        centerTitle: true,
+        centerTitle: isTitleCenter ?? false,
         elevation: 0,
         automaticallyImplyLeading: isBackAvailable ?? false,
         // leading: const FlutterLogo(
